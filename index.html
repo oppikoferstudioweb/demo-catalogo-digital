@@ -1,793 +1,1006 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="scroll-smooth">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aura • Semijoias Finas & Acessórios</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        champagne: {
-                            100: '#fdfbf7',
-                            200: '#f4ede2',
-                            500: '#c5a880',
-                            600: '#b08d5d',
-                            700: '#946f41',
-                        }
-                    },
-                    fontFamily: {
-                        serif: ['Didot', 'Bodoni MT', 'Cinzel', 'Georgia', 'serif'],
-                        sans: ['system-ui', '-apple-system', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #faf8f5;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #e5ded3;
-            border-radius: 3px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #c5a880;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aura • Semijoias Finas &amp; Acessórios</title>
+  <meta name="description" content="Aura Semijoias: curadoria de peças delicadas em banho Ouro 18k e Prata 925, 100% hipoalergênicas com garantia e envio para todo o Brasil." />
 
-        /* Sombra Base Refinada e Discreta (Mobile & Desktop) */
-        .card-produto {
-            box-shadow: 0 2px 10px -1px rgba(180, 145, 100, 0.10), 0 1px 4px -1px rgba(0, 0, 0, 0.02) !important;
-            transition: box-shadow 0.3s ease, transform 0.3s ease !important;
-        }
+  <!-- Fonts: Cormorant Garamond (Editorial) + Plus Jakarta Sans (Interface) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-        /* Efeito de Elevação e Expansão EXCLUSIVO para Desktop (Mouse) */
-        @media (hover: hover) and (pointer: fine) {
-            .card-produto:hover {
-                box-shadow: 0 14px 30px -4px rgba(180, 145, 100, 0.22), 0 4px 10px -2px rgba(180, 145, 100, 0.06) !important;
-                transform: translateY(-4px);
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            aura: {
+              cream: '#FDFBF7',
+              sand: '#F4EDE2',
+              gold: '#C5A880',
+              goldDark: '#9A784B',
+              stone: '#1C1917',
+              muted: '#57534E'
             }
+          },
+          fontFamily: {
+            display: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif']
+          }
         }
+      }
+    };
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
-        /* No Mobile (Touch): o card fica 100% firme e estável na rolagem */
-        @media (hover: none) {
-            .card-produto {
-                transform: none !important;
-            }
-        }
-    </style>
+  <style>
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    @media (hover: hover) and (pointer: fine) {
+      .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 22px 42px -14px rgba(154, 120, 75, 0.22);
+      }
+    }
+
+    .modal-backdrop {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    .modal-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modal-panel {
+      transform: translateY(18px) scale(0.98);
+      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .modal-backdrop.open .modal-panel {
+      transform: translateY(0) scale(1);
+    }
+  </style>
 </head>
-<body class="bg-champagne-100 text-stone-800 font-sans antialiased selection:bg-champagne-500 selection:text-white pb-32">
+<body class="bg-aura-cream text-aura-stone font-sans antialiased pb-28 selection:bg-aura-gold selection:text-white">
 
-    <!-- BARRA DE TOPO COM SACOLA FIXA -->
-    <nav class="fixed top-0 left-0 w-full bg-white/95 backdrop-blur-md z-40 border-b border-stone-200/70">
-        <div class="max-w-4xl mx-auto px-4 h-18 py-3 flex items-center justify-between">
-            <!-- LOGO BOUTIQUE VETORIAL -->
-            <a href="#" class="flex items-center gap-2">
-                <span class="w-8 h-8 rounded-full border border-champagne-500 flex items-center justify-center text-champagne-600">
-                    <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
-                        <path d="M12 2L15 8L21 9L16.5 14L18 20L12 17L6 20L7.5 14L3 9L9 8L12 2Z" />
-                    </svg>
-                </span>
-                <div>
-                    <span class="font-serif tracking-[0.25em] text-lg font-bold text-stone-900 uppercase block leading-tight">AURA</span>
-                    <span class="text-[9px] tracking-[0.3em] uppercase text-stone-400 block">Semijoias & Acessórios</span>
-                </div>
-            </a>
+  <!-- =======================================================================
+       TOP NAVBAR BRANCA LIMPA (Logo Vetorial + Apenas "AURA")
+       ======================================================================= -->
+  <nav class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-stone-200/80">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-4">
+      <a href="#topo" class="flex items-center gap-2.5 group">
+        <span class="w-9 h-9 rounded-full border border-aura-gold/70 bg-aura-cream flex items-center justify-center text-aura-goldDark shrink-0 group-hover:scale-105 transition-transform">
+          <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+            <path d="M12 2L14.8 8.2L21 9.2L16.4 13.7L17.6 20L12 17L6.4 20L7.6 13.7L3 9.2L9.2 8.2L12 2Z" />
+          </svg>
+        </span>
+        <span class="font-display font-bold text-2xl tracking-[0.18em] text-aura-stone uppercase leading-none">AURA</span>
+      </a>
 
-            <!-- SACOLA DE COMPRAS NO CABEÇALHO -->
-            <button type="button" id="abrirSacola" aria-label="Abrir sacola com 0 itens" aria-haspopup="dialog" aria-controls="modalSacola" class="relative flex items-center gap-2.5 px-3.5 py-2 bg-stone-900 text-white rounded-full text-xs font-semibold shadow-sm hover:bg-champagne-600 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-champagne-600">
-                <i class="fa-solid fa-bag-shopping text-xs"></i>
-                <span class="hidden sm:inline">Sacola:</span>
-                <span id="badgeSacolaQtd" aria-live="polite" aria-atomic="true" class="bg-champagne-500 text-stone-900 font-bold px-1.5 py-0.2 rounded-full text-[10px]">0</span>
-            </button>
+      <div class="hidden md:flex items-center gap-7 text-xs font-semibold text-stone-600">
+        <a href="#historia" class="hover:text-aura-stone transition-colors">Nossa História</a>
+        <a href="#catalogo" class="hover:text-aura-stone transition-colors">Catálogo</a>
+        <button type="button" onclick="abrirModalConsultoria()" class="hover:text-aura-stone transition-colors cursor-pointer">Presentes &amp; Mix</button>
+        <a href="#duvidas" class="hover:text-aura-stone transition-colors">Dúvidas</a>
+      </div>
+
+      <div class="flex items-center gap-2.5">
+        <button type="button" id="btn-abrir-sacola" aria-label="Abrir sacola de compras" class="relative inline-flex items-center gap-2 px-4 py-2 rounded-full bg-aura-stone hover:bg-aura-goldDark text-white font-semibold text-xs shadow-sm transition cursor-pointer">
+          <i class="fa-solid fa-bag-shopping text-aura-gold"></i>
+          <span class="hidden sm:inline">Sacola</span>
+          <span id="badge-sacola" class="px-1.5 py-0.5 rounded-full bg-aura-gold text-aura-stone text-[10px] font-extrabold leading-none">0</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- =======================================================================
+       HERO EDITORIAL CLARO + FOTO DE JOALHERIA
+       ======================================================================= -->
+  <header id="topo" class="bg-aura-cream border-b border-stone-200/70 overflow-hidden">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-16 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+      <div class="lg:col-span-6 space-y-5">
+        <div class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-aura-goldDark hero-anim">
+          <span class="w-6 h-0.5 bg-aura-gold"></span>
+          <span>Curadoria em Semijoias Finas</span>
         </div>
-    </nav>
 
-    <!-- HERO COMPACTO / APRESENTAÇÃO BOUTIQUE -->
-    <header class="pt-24 pb-8 px-4 max-w-4xl mx-auto text-center">
-        <!-- Aviso Frete / Garantia -->
-        <div class="inline-flex items-center gap-2 px-3 py-1 bg-champagne-200/60 rounded-full text-[11px] font-semibold text-champagne-700 mb-4 border border-champagne-500/20">
-            <span>✨ Banho Ouro 18k & Prata 925 • Hipoalergênicos</span>
-        </div>
-
-        <h1 class="font-serif text-3xl sm:text-4xl text-stone-900 font-normal tracking-tight mb-2">
-            Brilho sutil para <span class="italic font-light">todos os momentos.</span>
+        <h1 class="font-display text-4xl sm:text-5xl lg:text-[3.6rem] font-semibold leading-[1.06] tracking-tight text-aura-stone hero-anim">
+          Brilho sutil para <span class="italic font-medium text-aura-goldDark">todos os momentos.</span>
         </h1>
-        <p class="text-stone-500 text-xs sm:text-sm max-w-md mx-auto mb-6">
-            Explore nossa curadoria de peças delicadas. Selecione suas favoritas e envie para nosso WhatsApp para combinar frete e entrega.
+
+        <p class="text-stone-600 text-sm sm:text-base max-w-xl leading-relaxed hero-anim">
+          Peças leves, antialérgicas e atemporais em banho Ouro 18k e Prata 925. Escolha seus detalhes favoritos e monte sua sacola com praticidade direto para o WhatsApp.
         </p>
 
-        <!-- FILTROS DE CATEGORIA (TAGS CLICÁVEIS) -->
-        <div class="flex flex-wrap items-center justify-center gap-2 pb-2">
-            <button onclick="filtrarProdutos('todos')" id="filtro-todos" class="px-4 py-1.5 rounded-full text-xs font-bold bg-stone-900 text-white transition shrink-0">
-                Ver Tudo
-            </button>
-            <button onclick="filtrarProdutos('colares')" id="filtro-colares" class="px-4 py-1.5 rounded-full text-xs font-medium bg-white text-stone-600 border border-stone-200 hover:border-champagne-500 transition shrink-0">
-                Colares
-            </button>
-            <button onclick="filtrarProdutos('brincos')" id="filtro-brincos" class="px-4 py-1.5 rounded-full text-xs font-medium bg-white text-stone-600 border border-stone-200 hover:border-champagne-500 transition shrink-0">
-                Brincos & Argolas
-            </button>
-            <button onclick="filtrarProdutos('aneis')" id="filtro-aneis" class="px-4 py-1.5 rounded-full text-xs font-medium bg-white text-stone-600 border border-stone-200 hover:border-champagne-500 transition shrink-0">
-                Anéis
-            </button>
+        <div class="pt-2 flex flex-wrap items-center gap-x-6 gap-y-3 hero-anim">
+          <a href="#catalogo" class="inline-flex items-center gap-2.5 text-sm font-bold text-aura-stone border-b-2 border-aura-gold pb-1 hover:text-aura-goldDark transition-colors">
+            <span>Explorar coleção atual</span>
+            <i class="fa-solid fa-arrow-down text-xs"></i>
+          </a>
+          <a href="#historia" class="inline-flex items-center gap-2 text-sm font-semibold text-stone-500 hover:text-aura-stone transition-colors">
+            <span>Conhecer a Aura</span>
+            <i class="fa-solid fa-arrow-right text-[11px]"></i>
+          </a>
         </div>
-    </header>
 
-    <!-- GRADE DE PRODUTOS (2 COLUNAS MOBILE - ESTILO E-COMMERCE) -->
-    <main class="max-w-4xl mx-auto px-4">
-        <div id="gridProdutos" class="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-6">
-
-            <!-- Produto 1: Colar Delicado com Pingente -->
-            <div class="card-produto bg-white rounded-2xl overflow-hidden border border-stone-200/70 p-2.5 sm:p-3 flex flex-col justify-between group shadow-sm hover:shadow-md transition" data-categoria="colares">
-                <div>
-                    <div class="relative aspect-square rounded-xl overflow-hidden bg-stone-100 mb-3">
-                        <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=600&q=80" 
-                             alt="Colar Delicado com Pingente" 
-                             class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                        <span class="absolute top-2 left-2 bg-champagne-500 text-stone-950 text-[10px] font-black px-2 py-0.5 rounded-md">
-                            Ouro 18k
-                        </span>
-                    </div>
-                    <span class="text-[10px] uppercase tracking-wider text-stone-400 font-semibold block mb-0.5">Colares</span>
-                    <h3 class="font-serif text-xs sm:text-sm font-bold text-stone-900 leading-snug mb-1">Corrente Delicada com Pingente</h3>
-                    <p class="text-[11px] text-stone-500 mb-2">Linha fina e leve com brilho discreto para uso diário.</p>
-                </div>
-                <div class="pt-2 border-t border-stone-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                    <span class="font-serif font-black text-sm sm:text-base text-stone-900">R$ 59,00</span>
-                    <button onclick="adicionarASacola('Corrente Delicada com Pingente', 59)" class="w-full sm:w-auto px-3 py-1.5 bg-champagne-100 hover:bg-stone-900 hover:text-white text-stone-800 font-bold rounded-lg text-xs transition border border-stone-200 flex items-center justify-center gap-1.5 active:scale-95">
-                        <i class="fa-solid fa-plus text-[10px]"></i> <span>Adicionar</span><span class="hidden sm:inline"> à sacola</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Produto 2: Argolas Douradas -->
-            <div class="card-produto bg-white rounded-2xl overflow-hidden border border-stone-200/70 p-2.5 sm:p-3 flex flex-col justify-between group shadow-sm hover:shadow-md transition" data-categoria="brincos">
-                <div>
-                    <div class="relative aspect-square rounded-xl overflow-hidden bg-stone-100 mb-3">
-                        <img src="https://images.unsplash.com/photo-1630019852942-f89202989a59?auto=format&fit=crop&w=600&q=80" 
-                             alt="Brincos de Argola Dourados" 
-                             class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                        <span class="absolute top-2 left-2 bg-champagne-500 text-stone-950 text-[10px] font-black px-2 py-0.5 rounded-md">
-                            Ouro 18k
-                        </span>
-                    </div>
-                    <span class="text-[10px] uppercase tracking-wider text-stone-400 font-semibold block mb-0.5">Brincos</span>
-                    <h3 class="font-serif text-xs sm:text-sm font-bold text-stone-900 leading-snug mb-1">Argolas Tubulares Brilhantes</h3>
-                    <p class="text-[11px] text-stone-500 mb-2">Modelo clássico em dourado com acabamento clean e leve.</p>
-                </div>
-                <div class="pt-2 border-t border-stone-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                    <span class="font-serif font-black text-sm sm:text-base text-stone-900">R$ 48,00</span>
-                    <button onclick="adicionarASacola('Argolas Tubulares Brilhantes', 48)" class="w-full sm:w-auto px-3 py-1.5 bg-champagne-100 hover:bg-stone-900 hover:text-white text-stone-800 font-bold rounded-lg text-xs transition border border-stone-200 flex items-center justify-center gap-1.5 active:scale-95">
-                        <i class="fa-solid fa-plus text-[10px]"></i> <span>Adicionar</span><span class="hidden sm:inline"> à sacola</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Produto 3: Anel Solitário de Diamante/Cristal -->
-            <div class="card-produto bg-white rounded-2xl overflow-hidden border border-stone-200/70 p-2.5 sm:p-3 flex flex-col justify-between group shadow-sm hover:shadow-md transition" data-categoria="aneis">
-                <div>
-                    <div class="relative aspect-square rounded-xl overflow-hidden bg-stone-100 mb-3">
-                        <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=600&q=80" 
-                             alt="Anel Solitário de Cristal" 
-                             class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                        <span class="absolute top-2 left-2 bg-white/90 backdrop-blur-sm text-[10px] font-bold text-stone-700 px-2 py-0.5 rounded-md border border-stone-200">
-                            Prata 925
-                        </span>
-                    </div>
-                    <span class="text-[10px] uppercase tracking-wider text-stone-400 font-semibold block mb-0.5">Anéis</span>
-                    <h3 class="font-serif text-xs sm:text-sm font-bold text-stone-900 leading-snug mb-1">Anel Solitário em Prata</h3>
-                    <p class="text-[11px] text-stone-500 mb-2">Aro delicado com pedra central e brilho intenso.</p>
-                </div>
-                <div class="pt-2 border-t border-stone-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                    <span class="font-serif font-black text-sm sm:text-base text-stone-900">R$ 52,00</span>
-                    <button onclick="adicionarASacola('Anel Solitário em Prata', 52)" class="w-full sm:w-auto px-3 py-1.5 bg-champagne-100 hover:bg-stone-900 hover:text-white text-stone-800 font-bold rounded-lg text-xs transition border border-stone-200 flex items-center justify-center gap-1.5 active:scale-95">
-                        <i class="fa-solid fa-plus text-[10px]"></i> <span>Adicionar</span><span class="hidden sm:inline"> à sacola</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Produto 4: Correntes e Colares em Camadas -->
-            <div class="card-produto bg-white rounded-2xl overflow-hidden border border-stone-200/70 p-2.5 sm:p-3 flex flex-col justify-between group shadow-sm hover:shadow-md transition" data-categoria="colares">
-                <div>
-                    <div class="relative aspect-square rounded-xl overflow-hidden bg-stone-100 mb-3">
-                        <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=600&q=80" 
-                             alt="Composição de Colares e Correntes Douradas" 
-                             class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                        <span class="absolute top-2 left-2 bg-champagne-500 text-stone-950 text-[10px] font-black px-2 py-0.5 rounded-md">
-                            Ouro 18k
-                        </span>
-                    </div>
-                    <span class="text-[10px] uppercase tracking-wider text-stone-400 font-semibold block mb-0.5">Colares</span>
-                    <h3 class="font-serif text-xs sm:text-sm font-bold text-stone-900 leading-snug mb-1">Mix de Colares em Camadas</h3>
-                    <p class="text-[11px] text-stone-500 mb-2">Composição de correntes finas em look sofisticado e moderno.</p>
-                </div>
-                <div class="pt-2 border-t border-stone-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                    <span class="font-serif font-black text-sm sm:text-base text-stone-900">R$ 75,00</span>
-                    <button onclick="adicionarASacola('Mix de Colares em Camadas', 75)" class="w-full sm:w-auto px-3 py-1.5 bg-champagne-100 hover:bg-stone-900 hover:text-white text-stone-800 font-bold rounded-lg text-xs transition border border-stone-200 flex items-center justify-center gap-1.5 active:scale-95">
-                        <i class="fa-solid fa-plus text-[10px]"></i> <span>Adicionar</span><span class="hidden sm:inline"> à sacola</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Produto 5: Brincos Delicados em Base Neutra -->
-            <div class="card-produto bg-white rounded-2xl overflow-hidden border border-stone-200/70 p-2.5 sm:p-3 flex flex-col justify-between group shadow-sm hover:shadow-md transition" data-categoria="brincos">
-                <div>
-                    <div class="relative aspect-square rounded-xl overflow-hidden bg-stone-100 mb-3">
-                        <img src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=600&q=80" 
-                             alt="Brinco com Pedraria e Pérola" 
-                             class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                        <span class="absolute top-2 left-2 bg-white/90 backdrop-blur-sm text-[10px] font-bold text-stone-700 px-2 py-0.5 rounded-md border border-stone-200">
-                            Prata 925
-                        </span>
-                    </div>
-                    <span class="text-[10px] uppercase tracking-wider text-stone-400 font-semibold block mb-0.5">Brincos</span>
-                    <h3 class="font-serif text-xs sm:text-sm font-bold text-stone-900 leading-snug mb-1">Brinco com Pedra e Pérola</h3>
-                    <p class="text-[11px] text-stone-500 mb-2">Peça delicada com brilho suave e toque clássico.</p>
-                </div>
-                <div class="pt-2 border-t border-stone-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                    <span class="font-serif font-black text-sm sm:text-base text-stone-900">R$ 44,00</span>
-                    <button onclick="adicionarASacola('Brinco com Pedra e Pérola', 44)" class="w-full sm:w-auto px-3 py-1.5 bg-champagne-100 hover:bg-stone-900 hover:text-white text-stone-800 font-bold rounded-lg text-xs transition border border-stone-200 flex items-center justify-center gap-1.5 active:scale-95">
-                        <i class="fa-solid fa-plus text-[10px]"></i> <span>Adicionar</span><span class="hidden sm:inline"> à sacola</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Produto 6: Colar em Camadas -->
-            <div class="card-produto bg-white rounded-2xl overflow-hidden border border-stone-200/70 p-2.5 sm:p-3 flex flex-col justify-between group shadow-sm hover:shadow-md transition" data-categoria="colares">
-                <div>
-                    <div class="relative aspect-square rounded-xl overflow-hidden bg-stone-100 mb-3">
-                        <img src="https://images.unsplash.com/photo-1598560917505-59a3ad559071?auto=format&fit=crop&w=600&q=80" 
-                             alt="Colar em Camadas Dourado" 
-                             class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                        <span class="absolute top-2 left-2 bg-champagne-500 text-stone-950 text-[10px] font-black px-2 py-0.5 rounded-md">
-                            Ouro 18k
-                        </span>
-                    </div>
-                    <span class="text-[10px] uppercase tracking-wider text-stone-400 font-semibold block mb-0.5">Colares</span>
-                    <h3 class="font-serif text-xs sm:text-sm font-bold text-stone-900 leading-snug mb-1">Colar em Camadas com Brilho Misto</h3>
-                    <p class="text-[11px] text-stone-500 mb-2">Camadas finas com visual sofisticado e acabamento dourado quente.</p>
-                </div>
-                <div class="pt-2 border-t border-stone-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                    <span class="font-serif font-black text-sm sm:text-base text-stone-900">R$ 39,00</span>
-                    <button onclick="adicionarASacola('Colar em Camadas com Brilho Misto', 39)" class="w-full sm:w-auto px-3 py-1.5 bg-champagne-100 hover:bg-stone-900 hover:text-white text-stone-800 font-bold rounded-lg text-xs transition border border-stone-200 flex items-center justify-center gap-1.5 active:scale-95">
-                        <i class="fa-solid fa-plus text-[10px]"></i> <span>Adicionar</span><span class="hidden sm:inline"> à sacola</span>
-                    </button>
-                </div>
-            </div>
-
+        <div class="pt-5 border-t border-stone-200/90 flex flex-wrap gap-x-6 gap-y-2 text-xs text-stone-500 font-medium hero-anim">
+          <span class="flex items-center gap-1.5"><i class="fa-solid fa-gem text-aura-goldDark"></i> Ouro 18k &amp; Prata 925</span>
+          <span class="flex items-center gap-1.5"><i class="fa-solid fa-shield-heart text-aura-goldDark"></i> 100% Níquel-Free</span>
+          <span class="flex items-center gap-1.5"><i class="fa-solid fa-award text-aura-goldDark"></i> Garantia de 1 Ano</span>
         </div>
-    </main>
+      </div>
 
-    <!-- FAIXA DE BENEFÍCIOS & CUIDADOS COM A PEÇA -->
-    <section class="max-w-4xl mx-auto px-4 mt-16">
-        <div class="bg-white p-6 sm:p-8 rounded-2xl border border-stone-200/80 grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
-            <div class="p-2">
-                <i class="fa-solid fa-gem text-champagne-600 text-2xl mb-2"></i>
-                <h4 class="font-serif font-bold text-stone-900 text-sm mb-1">Banho Antialérgico</h4>
-                <p class="text-[11px] text-stone-500">Níquel free com verniz protetor italiano de alta durabilidade.</p>
+      <div class="lg:col-span-6 hero-anim">
+        <div class="relative rounded-3xl overflow-hidden shadow-2xl border border-stone-200/80 bg-white aspect-[4/3]">
+          <img
+            src="https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=1200&q=85"
+            alt="Curadoria de semijoias delicadas Aura"
+            class="w-full h-full object-cover"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-stone-950/60 via-transparent to-transparent"></div>
+          <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between gap-3 text-xs">
+            <div class="bg-white/95 backdrop-blur-sm text-aura-stone px-3.5 py-2 rounded-xl shadow-md">
+              <p class="font-display font-bold text-sm leading-tight">Banho em Camadas</p>
+              <p class="text-[11px] text-stone-500">Verniz italiano de alta durabilidade</p>
             </div>
-            <div class="p-2 border-t sm:border-t-0 sm:border-l sm:border-r border-stone-100 pt-4 sm:pt-2">
-                <i class="fa-solid fa-box-open text-champagne-600 text-2xl mb-2"></i>
-                <h4 class="font-serif font-bold text-stone-900 text-sm mb-1">Embalagem de Presente</h4>
-                <p class="text-[11px] text-stone-500">Todas as peças vão em saquinho de algodão cru perfumado.</p>
-            </div>
-            <div class="p-2 border-t sm:border-t-0 border-stone-100 pt-4 sm:pt-2">
-                <i class="fa-solid fa-truck-fast text-champagne-600 text-2xl mb-2"></i>
-                <h4 class="font-serif font-bold text-stone-900 text-sm mb-1">Envios para Todo o Brasil</h4>
-                <p class="text-[11px] text-stone-500">Correios com seguro ou motoboy rápido na região.</p>
-            </div>
+            <span class="px-3.5 py-1.5 rounded-full bg-aura-gold text-aura-stone font-bold text-[11px] shadow-md shrink-0">
+              Nova Coleção
+            </span>
+          </div>
         </div>
-    </section>
-
-    <!-- RODAPÉ & ASSINATURA -->
-    <footer class="mt-16 text-center text-stone-400 text-xs px-4">
-        <p class="font-serif text-stone-700 font-bold tracking-widest uppercase">AURA • SEMIJOIAS</p>
-        <p class="mt-1">Atendimento online de Segunda a Sábado das 09h às 19h.</p>
-        
-        <div class="mt-6 pt-4 border-t border-stone-200 max-w-md mx-auto text-[11px] text-stone-500">
-            <p>Catálogo Digital Otimizado • Desenvolvido por 
-                <a href="https://oppikoferstudioweb.vercel.app" 
-                   target="_blank" 
-                   rel="noopener"
-                   class="font-bold text-champagne-700 hover:underline">
-                   Oppikofer • Studio Web
-                </a>
-            </p>
-        </div>
-    </footer>
-
-    <!-- BARRA FIXA DE SACOLA FLUTUANTE NO RODAPÉ -->
-    <div id="barraSacola" class="fixed bottom-4 left-1/2 -translate-x-1/2 w-[94%] max-w-md bg-stone-950 text-white p-3 sm:p-3.5 rounded-2xl shadow-2xl z-50 transform translate-y-32 opacity-0 transition-all duration-300 border border-stone-800">
-        <div class="flex items-center justify-between gap-3">
-            <div class="flex items-center gap-2.5 cursor-pointer" onclick="abrirModalSacola()">
-                <div class="w-9 h-9 rounded-xl bg-champagne-500 text-stone-950 flex items-center justify-center font-bold text-xs shrink-0 shadow">
-                    <span id="txtQtdSacola">0</span>
-                </div>
-                <div>
-                    <span class="block text-[10px] text-stone-400 uppercase font-semibold">Subtotal</span>
-                    <span id="txtTotalSacola" class="block text-sm font-bold text-white leading-tight">R$ 0,00</span>
-                </div>
-            </div>
-
-            <div class="flex items-center gap-2">
-                <button onclick="esvaziarSacola()" title="Limpar sacola" class="text-[11px] text-stone-400 hover:text-white px-2 py-1.5 transition">
-                    Limpar
-                </button>
-                <button onclick="abrirModalSacola()" class="bg-emerald-500 hover:bg-emerald-600 text-stone-950 font-bold px-3.5 py-2 rounded-xl text-xs flex items-center gap-1.5 transition active:scale-95 shadow-md">
-                    <span>Ver Sacola</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
-                </button>
-            </div>
-        </div>
+      </div>
     </div>
+  </header>
 
-    <dialog id="modalSacola" aria-labelledby="tituloModalSacola" class="w-[calc(100%-2rem)] max-w-lg max-h-[88vh] max-h-[88dvh] overflow-hidden rounded-2xl border border-champagne-500/30 bg-champagne-100 p-0 text-stone-800 shadow-2xl backdrop:bg-stone-950/60 backdrop:backdrop-blur-sm">
-        <div class="flex max-h-[88vh] max-h-[88dvh] flex-col">
-            <!-- Header do Modal -->
-            <div class="flex items-center justify-between border-b border-stone-200 px-4 py-3.5 sm:px-6 bg-white/70">
-                <div>
-                    <p class="text-[10px] font-semibold uppercase tracking-[0.2em] text-champagne-700">Aura • Semijoias</p>
-                    <h2 id="tituloModalSacola" class="mt-0.5 font-serif text-lg sm:text-xl font-bold text-stone-900">
-                        Sua sacola <span id="contadorItensModal" class="text-xs font-normal text-stone-500"></span>
-                    </h2>
-                </div>
-                <button type="button" id="fecharModalSacola" aria-label="Fechar sacola" class="flex h-9 w-9 items-center justify-center rounded-full border border-stone-200 bg-white text-stone-700 transition hover:bg-champagne-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-champagne-600">
-                    <i class="fa-solid fa-xmark text-sm" aria-hidden="true"></i>
-                </button>
-            </div>
-
-            <!-- Conteúdo com Scroll -->
-            <div class="min-h-0 flex-1 overflow-y-auto p-4 sm:p-6 space-y-4">
-                <!-- Lista de Produtos -->
-                <div id="itensModalSacola" class="space-y-2.5"></div>
-
-                <!-- Formulário de Dados para o WhatsApp (Aparece apenas quando há itens) -->
-                <div id="secaoDadosCliente" class="hidden rounded-xl border border-stone-200/90 bg-white p-3.5 sm:p-4 shadow-sm space-y-3">
-                    <div class="flex items-center gap-2 border-b border-stone-100 pb-2">
-                        <i class="fa-brands fa-whatsapp text-emerald-600 text-base"></i>
-                        <div>
-                            <h4 class="font-serif text-xs sm:text-sm font-bold text-stone-900 leading-tight">Dados para o Pedido</h4>
-                            <p class="text-[10px] text-stone-400">Preencha para agilizar seu atendimento e cálculo de frete</p>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                        <div>
-                            <label for="clienteNome" class="block text-[11px] font-semibold text-stone-600 mb-1">Seu Nome</label>
-                            <input type="text" id="clienteNome" placeholder="Ex: Juliana Santos" 
-                                   class="w-full text-xs px-3 py-2 rounded-lg border border-stone-200 focus:border-champagne-500 focus:ring-1 focus:ring-champagne-500 outline-none bg-stone-50/50">
-                        </div>
-                        <div>
-                            <label for="clienteLocal" class="block text-[11px] font-semibold text-stone-600 mb-1">Cidade / Bairro ou CEP</label>
-                            <input type="text" id="clienteLocal" placeholder="Ex: Centro - Campinas/SP" 
-                                   class="w-full text-xs px-3 py-2 rounded-lg border border-stone-200 focus:border-champagne-500 focus:ring-1 focus:ring-champagne-500 outline-none bg-stone-50/50">
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-[11px] font-semibold text-stone-600 mb-1">Forma de Pagamento Preferida</label>
-                        <div class="grid grid-cols-3 gap-1.5 text-center">
-                            <label class="cursor-pointer">
-                                <input type="radio" name="formaPagamento" value="Pix" class="peer sr-only" checked>
-                                <span class="block px-2 py-1.5 rounded-lg border border-stone-200 text-[11px] font-medium peer-checked:border-emerald-500 peer-checked:bg-emerald-50 peer-checked:text-emerald-700 hover:bg-stone-50 transition">
-                                    <i class="fa-brands fa-pix text-[10px]"></i> Pix
-                                </span>
-                            </label>
-                            <label class="cursor-pointer">
-                                <input type="radio" name="formaPagamento" value="Cartão de Crédito" class="peer sr-only">
-                                <span class="block px-2 py-1.5 rounded-lg border border-stone-200 text-[11px] font-medium peer-checked:border-champagne-600 peer-checked:bg-champagne-200/50 peer-checked:text-champagne-800 hover:bg-stone-50 transition">
-                                    <i class="fa-solid fa-credit-card text-[10px]"></i> Cartão
-                                </span>
-                            </label>
-                            <label class="cursor-pointer">
-                                <input type="radio" name="formaPagamento" value="A combinar" class="peer sr-only">
-                                <span class="block px-2 py-1.5 rounded-lg border border-stone-200 text-[11px] font-medium peer-checked:border-stone-900 peer-checked:bg-stone-900 peer-checked:text-white hover:bg-stone-50 transition">
-                                    <i class="fa-regular fa-comments text-[10px]"></i> Combinar
-                                </span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label for="clienteObs" class="block text-[11px] font-semibold text-stone-600 mb-1">Observações (opcional)</label>
-                        <input type="text" id="clienteObs" placeholder="Ex: É para presente / Embalagem" 
-                               class="w-full text-xs px-3 py-1.5 rounded-lg border border-stone-200 focus:border-champagne-500 focus:ring-1 focus:ring-champagne-500 outline-none bg-stone-50/50">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Footer com Total e Botão de Enviar -->
-            <div class="border-t border-stone-200 bg-white p-4 sm:p-5">
-                <div class="mb-3 flex items-center justify-between">
-                    <div>
-                        <span class="text-[11px] font-semibold uppercase tracking-wider text-stone-400 block">Total do Pedido</span>
-                        <span class="text-[10px] text-stone-400">Frete calculado via WhatsApp</span>
-                    </div>
-                    <span id="totalModalSacola" class="font-serif text-xl sm:text-2xl font-black text-stone-900">R$ 0,00</span>
-                </div>
-                <div class="flex items-center gap-2.5">
-                    <button type="button" id="limparModalSacola" onclick="esvaziarSacola()" aria-label="Limpar sacola" title="Limpar sacola" class="rounded-xl border border-stone-200 px-3.5 py-2.5 text-xs font-semibold text-stone-500 transition hover:bg-red-50 hover:text-red-600 hover:border-red-200 disabled:cursor-not-allowed disabled:opacity-40">
-                        <i class="fa-regular fa-trash-can sm:mr-1"></i> <span class="hidden sm:inline">Limpar</span>
-                    </button>
-                    <button type="button" id="enviarModalSacola" onclick="enviarSacolaWhatsApp()" class="flex flex-1 items-center justify-center gap-2 rounded-xl bg-emerald-500 px-4 py-3 text-xs sm:text-sm font-bold text-stone-950 shadow-md transition hover:bg-emerald-600 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50">
-                        <i class="fa-brands fa-whatsapp text-base" aria-hidden="true"></i> Enviar Pedido no WhatsApp
-                    </button>
-                </div>
-            </div>
+  <!-- =======================================================================
+       NOSSA HISTÓRIA (APRESENTAÇÃO DA MARCA)
+       ======================================================================= -->
+  <section id="historia" class="bg-white border-b border-stone-200/70 py-14 sm:py-20">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+      <div class="lg:col-span-5 reveal-up">
+        <div class="rounded-3xl overflow-hidden shadow-lg border border-stone-200/80 aspect-[4/3] bg-stone-100">
+          <img
+            src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=1000&q=85"
+            alt="Semijoias e acessórios Aura em exposição"
+            class="w-full h-full object-cover"
+          />
         </div>
-    </dialog>
+      </div>
 
-    <dialog id="modalImagemProduto" aria-label="Imagem ampliada do produto" class="max-h-none max-w-none overflow-hidden border-0 bg-transparent p-0 backdrop:bg-stone-950/85 backdrop:backdrop-blur-sm">
-        <div class="relative flex h-screen h-[100dvh] w-screen items-center justify-center p-4 sm:p-8">
-            <button type="button" id="fecharModalImagem" aria-label="Fechar imagem ampliada" class="absolute right-4 top-4 z-10 flex h-11 w-11 items-center justify-center rounded-full border border-champagne-500/40 bg-stone-950/80 text-white shadow-lg transition hover:bg-champagne-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-champagne-500">
-                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
-            </button>
-            <img id="imagemAmpliada" alt="" class="max-h-[85vh] max-h-[85dvh] max-w-full rounded-2xl object-contain shadow-2xl">
+      <div class="lg:col-span-7 space-y-4 reveal-up">
+        <div class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-aura-goldDark">
+          <span class="w-5 h-0.5 bg-aura-gold"></span>
+          <span>Nossa História</span>
         </div>
-    </dialog>
 
-    <!-- JAVASCRIPT: FILTRO DE CATEGORIAS E SACOLA -->
-    <script>
-        // 0. VISUALIZAÇÃO AMPLIADA DAS IMAGENS
-        const modalImagem = document.getElementById('modalImagemProduto');
-        const imagemAmpliada = document.getElementById('imagemAmpliada');
+        <h2 class="font-display text-3xl sm:text-4xl font-semibold text-aura-stone leading-tight">
+          Elegância leve pensada para acompanhar a rotina real.
+        </h2>
 
-        function abrirImagemProduto(imagem) {
-            const srcAmpliado = new URL(imagem.src);
-            if (srcAmpliado.hostname === 'images.unsplash.com') {
-                srcAmpliado.searchParams.set('w', '1200');
-                srcAmpliado.searchParams.set('q', '90');
-            }
+        <p class="text-stone-600 text-sm sm:text-base leading-relaxed">
+          A <strong>Aura Semijoias</strong> nasceu do desejo de unir o desenho delicado da alta joalheria ao conforto de peças acessíveis para o dia a dia. Cada corrente, argola ou anel passa por uma curadoria cuidadosa de proporção, leveza e brilho equilibrado.
+        </p>
 
-            imagemAmpliada.src = srcAmpliado.href;
-            imagemAmpliada.alt = imagem.alt;
-            modalImagem.showModal();
+        <p class="text-stone-600 text-sm sm:text-base leading-relaxed">
+          Trabalhamos exclusivamente com ligas <strong>livres de níquel</strong> e banho em camadas com verniz protetor, garantindo conforto até para peles sensíveis e envio pronto para presentear em saquinho de algodão cru perfumado.
+        </p>
+
+        <div class="pt-4 grid grid-cols-1 sm:grid-cols-3 gap-4 border-t border-stone-100">
+          <div class="p-4 rounded-2xl bg-aura-cream border border-stone-200/60">
+            <i class="fa-solid fa-gem text-aura-goldDark mb-1.5 block"></i>
+            <h3 class="font-display font-bold text-base text-aura-stone">Banho Ouro 18k &amp; Prata</h3>
+            <p class="text-xs text-stone-500 mt-0.5">Camadas nobres com brilho duradouro e acabamento fino.</p>
+          </div>
+          <div class="p-4 rounded-2xl bg-aura-cream border border-stone-200/60">
+            <i class="fa-solid fa-feather text-aura-goldDark mb-1.5 block"></i>
+            <h3 class="font-display font-bold text-base text-aura-stone">100% Hipoalergênico</h3>
+            <p class="text-xs text-stone-500 mt-0.5">Fórmula níquel-free pensada para uso contínuo sem irritações.</p>
+          </div>
+          <div class="p-4 rounded-2xl bg-aura-cream border border-stone-200/60">
+            <i class="fa-solid fa-gift text-aura-goldDark mb-1.5 block"></i>
+            <h3 class="font-display font-bold text-base text-aura-stone">Pronto para Presente</h3>
+            <p class="text-xs text-stone-500 mt-0.5">Embalagem especial e opção de cartão personalizado.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =======================================================================
+       CATÁLOGO INTERATIVO (BUSCA + FILTROS + MODAL DE PERSONALIZAÇÃO)
+       ======================================================================= -->
+  <main id="catalogo" class="bg-aura-sand/45 py-12 sm:py-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6 reveal-up">
+        <div>
+          <span class="text-[11px] font-bold uppercase tracking-widest text-aura-goldDark">Curadoria Online</span>
+          <h2 class="font-display text-3xl sm:text-4xl font-semibold text-aura-stone">Catálogo de Semijoias</h2>
+        </div>
+
+        <div class="relative w-full sm:w-72">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400 text-xs"></i>
+          <input id="input-busca" type="search" placeholder="Buscar peça (ex: colar, pérola, anel)..." class="w-full pl-9 pr-4 py-2.5 rounded-xl bg-white border border-stone-200 text-xs sm:text-sm focus:outline-none focus:border-aura-goldDark shadow-sm" />
+        </div>
+      </div>
+
+      <!-- Filtros -->
+      <div id="filtros-container" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-3 mb-6 reveal-up">
+        <button type="button" data-cat="todos" class="cat-pill px-4 py-2 rounded-full text-xs font-bold bg-aura-stone text-white shrink-0 transition cursor-pointer">
+          Ver Tudo (6)
+        </button>
+        <button type="button" data-cat="colares" class="cat-pill px-4 py-2 rounded-full text-xs font-semibold bg-white text-stone-600 border border-stone-200 hover:border-aura-goldDark shrink-0 transition cursor-pointer">
+          Colares
+        </button>
+        <button type="button" data-cat="brincos" class="cat-pill px-4 py-2 rounded-full text-xs font-semibold bg-white text-stone-600 border border-stone-200 hover:border-aura-goldDark shrink-0 transition cursor-pointer">
+          Brincos
+        </button>
+        <button type="button" data-cat="aneis" class="cat-pill px-4 py-2 rounded-full text-xs font-semibold bg-white text-stone-600 border border-stone-200 hover:border-aura-goldDark shrink-0 transition cursor-pointer">
+          Anéis
+        </button>
+      </div>
+
+      <!-- Grid -->
+      <div id="grid-produtos" class="grid grid-cols-2 md:grid-cols-3 gap-3.5 sm:gap-6"></div>
+      <p id="estado-vazio" class="hidden text-center py-12 text-sm text-stone-500">Nenhuma peça encontrada com esse termo.</p>
+    </div>
+  </main>
+
+  <!-- =======================================================================
+       BLOCO CONSULTORIA DE MIX & PRESENTES
+       ======================================================================= -->
+  <section class="bg-white py-12 sm:py-16 border-t border-stone-200/70">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 reveal-up">
+      <div class="rounded-3xl bg-aura-stone text-white p-6 sm:p-10 grid grid-cols-1 md:grid-cols-12 gap-6 items-center shadow-xl">
+        <div class="md:col-span-8">
+          <span class="inline-block px-3 py-1 rounded-full bg-aura-gold/20 text-aura-gold text-[11px] font-bold uppercase tracking-wider mb-3">
+            Atendimento Personalizado
+          </span>
+          <h2 class="font-display text-2xl sm:text-3xl font-semibold">
+            Quer ajuda para montar um mix de colares ou escolher um presente?
+          </h2>
+          <p class="mt-2 text-stone-300 text-xs sm:text-sm leading-relaxed">
+            Conte o estilo da pessoa ou a ocasião e nossa equipe sugere combinações harmônicas em Ouro 18k ou Prata 925 com foto real das peças juntas antes do envio.
+          </p>
+        </div>
+        <div class="md:col-span-4 flex justify-start md:justify-end">
+          <button type="button" onclick="abrirModalConsultoria()" class="w-full md:w-auto px-6 py-3.5 rounded-xl bg-aura-gold hover:bg-aura-goldDark text-aura-stone hover:text-white font-bold text-xs sm:text-sm shadow-lg transition cursor-pointer">
+            <i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i>Montar Mix / Presente
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =======================================================================
+       FAQ ACORDEÃO
+       ======================================================================= -->
+  <section id="duvidas" class="bg-aura-cream py-12 sm:py-16 border-t border-stone-200/70">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 reveal-up">
+      <div class="mb-6 text-center sm:text-left">
+        <span class="text-[11px] font-bold uppercase tracking-widest text-aura-goldDark">Cuidados &amp; Envios</span>
+        <h2 class="font-display text-3xl font-semibold text-aura-stone">Dúvidas Frequentes</h2>
+      </div>
+
+      <div class="space-y-3">
+        <div class="bg-white rounded-2xl border border-stone-200/80 overflow-hidden">
+          <button type="button" class="faq-btn w-full px-5 py-4 text-left flex items-center justify-between gap-4 font-semibold text-sm text-aura-stone cursor-pointer">
+            <span>As semijoias escurecem ou causam alergia?</span>
+            <i class="fa-solid fa-chevron-down text-xs text-stone-400 transition-transform"></i>
+          </button>
+          <div class="faq-body hidden px-5 pb-4 text-xs sm:text-sm text-stone-600 leading-relaxed border-t border-stone-100 pt-3">
+            Todas as peças são <strong>100% livres de níquel</strong> (principal causador de alergias) e recebem verniz protetor italiano após o banho. Evitando contato direto com perfumes, cremes e água de piscina/mar, o brilho permanece intacto por muito tempo.
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-stone-200/80 overflow-hidden">
+          <button type="button" class="faq-btn w-full px-5 py-4 text-left flex items-center justify-between gap-4 font-semibold text-sm text-aura-stone cursor-pointer">
+            <span>Qual é o prazo da garantia no banho?</span>
+            <i class="fa-solid fa-chevron-down text-xs text-stone-400 transition-transform"></i>
+          </button>
+          <div class="faq-body hidden px-5 pb-4 text-xs sm:text-sm text-stone-600 leading-relaxed border-t border-stone-100 pt-3">
+            Oferecemos <strong>1 ano de garantia</strong> contra defeitos de fabricação ou desgaste prematuro do banho, acompanhada de certificado digital no pedido.
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-stone-200/80 overflow-hidden">
+          <button type="button" class="faq-btn w-full px-5 py-4 text-left flex items-center justify-between gap-4 font-semibold text-sm text-aura-stone cursor-pointer">
+            <span>Como funciona o envio e a embalagem de presente?</span>
+            <i class="fa-solid fa-chevron-down text-xs text-stone-400 transition-transform"></i>
+          </button>
+          <div class="faq-body hidden px-5 pb-4 text-xs sm:text-sm text-stone-600 leading-relaxed border-t border-stone-100 pt-3">
+            Enviamos para todo o Brasil via Correios com seguro ou entrega rápida por motoboy na região de São Paulo. Todas as peças já vão em saquinho de algodão cru perfumado, e você pode incluir um bilhete de presente sem custo adicional.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =======================================================================
+       RODAPÉ COM INSTAGRAM FICTÍCIO (@aurasemijoias)
+       ======================================================================= -->
+  <footer class="bg-aura-stone text-stone-300 pt-10 pb-24 px-4 text-xs">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="text-center sm:text-left">
+        <p class="font-display font-bold text-white text-xl tracking-[0.18em] uppercase">AURA</p>
+        <p class="text-stone-400 mt-0.5">Atendimento online • Seg a Sáb, 09h às 19h</p>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <a href="https://instagram.com/aurasemijoias" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 hover:bg-aura-gold hover:text-aura-stone text-white font-semibold transition">
+          <i class="fa-brands fa-instagram text-sm"></i>
+          <span>@aurasemijoias</span>
+        </a>
+      </div>
+
+      <p class="text-[11px] text-stone-500 text-center sm:text-right">
+        Catálogo Digital • Desenvolvido por
+        <a href="https://oppikoferstudioweb.vercel.app" target="_blank" rel="noopener" class="text-aura-gold font-semibold hover:underline">Oppikofer • Studio Web</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- =======================================================================
+       BARRA FLUTUANTE DA SACOLA
+       ======================================================================= -->
+  <div id="barra-sacola" class="fixed bottom-4 left-1/2 -translate-x-1/2 w-[94%] max-w-lg bg-aura-stone text-white px-4 py-3 rounded-2xl shadow-2xl border border-aura-gold/40 z-40 translate-y-28 opacity-0 pointer-events-none transition-all duration-300 flex items-center justify-between gap-3">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl bg-aura-gold text-aura-stone font-extrabold flex items-center justify-center text-sm" id="barra-qtd">0</div>
+      <div>
+        <p class="text-[10px] uppercase tracking-wider text-stone-400 font-semibold">Subtotal estimado</p>
+        <p class="font-display font-bold text-lg text-white leading-tight" id="barra-total">R$ 0,00</p>
+      </div>
+    </div>
+    <button type="button" onclick="abrirSacola()" class="px-4 py-2.5 rounded-xl bg-aura-gold hover:bg-aura-goldDark text-aura-stone hover:text-white font-bold text-xs transition cursor-pointer shrink-0">
+      Revisar Sacola <i class="fa-solid fa-arrow-right ml-1"></i>
+    </button>
+  </div>
+
+  <!-- =======================================================================
+       MODAL 1: DETALHES DA JOIA (BANHO / ARO / BILHETE PRESENTE)
+       ======================================================================= -->
+  <div id="modal-produto" class="modal-backdrop fixed inset-0 z-50 bg-stone-950/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4" role="dialog" aria-modal="true">
+    <div class="modal-panel bg-white w-full max-w-xl max-h-[92vh] overflow-y-auto rounded-3xl shadow-2xl border border-stone-200">
+      <div class="relative aspect-[4/3] sm:aspect-[16/10] bg-stone-100 overflow-hidden">
+        <img id="mp-img" src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=800&q=80" alt="" class="w-full h-full object-cover" />
+        <button type="button" onclick="fecharModalProduto()" aria-label="Fechar detalhes" class="absolute top-3 right-3 w-9 h-9 rounded-full bg-stone-950/75 text-white flex items-center justify-center hover:bg-aura-stone cursor-pointer">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+        <span id="mp-badge" class="absolute bottom-3 left-3 px-3 py-1 rounded-full bg-aura-stone/90 text-aura-gold text-[11px] font-bold"></span>
+      </div>
+
+      <div class="p-5 sm:p-7 space-y-4">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <h3 id="mp-nome" class="font-display text-2xl sm:text-3xl font-semibold text-aura-stone"></h3>
+            <p id="mp-specs" class="text-xs text-stone-500 font-medium mt-0.5"></p>
+          </div>
+          <p id="mp-preco" class="font-display text-2xl font-bold text-aura-goldDark shrink-0"></p>
+        </div>
+
+        <p id="mp-desc" class="text-xs sm:text-sm text-stone-600 leading-relaxed"></p>
+
+        <!-- Seletor de Banho -->
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-stone-700 mb-2">
+            Escolha o acabamento: <span id="mp-banho-label" class="text-aura-goldDark font-extrabold">Ouro 18k</span>
+          </label>
+          <div id="mp-banhos" class="flex flex-wrap gap-2"></div>
+        </div>
+
+        <!-- Seletor de Aro (exibido apenas em anéis) -->
+        <div id="mp-aro-box" class="hidden">
+          <label class="block text-xs font-bold uppercase tracking-wider text-stone-700 mb-2">
+            Tamanho do Aro: <span id="mp-aro-label" class="text-aura-goldDark font-extrabold">16</span>
+          </label>
+          <div id="mp-aros" class="flex flex-wrap gap-2"></div>
+        </div>
+
+        <!-- Cartão de Presente Opcional -->
+        <div>
+          <label for="mp-presente-obs" class="block text-xs font-bold text-stone-700 mb-1">
+            Embalagem / Bilhete para presente (opcional)
+          </label>
+          <input id="mp-presente-obs" type="text" placeholder="Ex: É para presente / Mensagem no cartão..." class="w-full px-3.5 py-2.5 rounded-xl border border-stone-200 text-xs sm:text-sm focus:outline-none focus:border-aura-goldDark" />
+        </div>
+
+        <div class="pt-2 flex items-center gap-3">
+          <div class="inline-flex items-center rounded-xl border border-stone-200 bg-stone-50">
+            <button type="button" onclick="alterarQtdModal(-1)" class="w-10 h-11 flex items-center justify-center text-stone-600 hover:text-aura-stone font-bold cursor-pointer">-</button>
+            <span id="mp-qtd" class="w-8 text-center text-sm font-bold text-aura-stone">1</span>
+            <button type="button" onclick="alterarQtdModal(1)" class="w-10 h-11 flex items-center justify-center text-stone-600 hover:text-aura-stone font-bold cursor-pointer">+</button>
+          </div>
+
+          <button type="button" onclick="confirmarAdicionarSacola()" class="flex-1 py-3.5 px-5 rounded-xl bg-aura-stone hover:bg-aura-goldDark text-white font-bold text-xs sm:text-sm transition cursor-pointer flex items-center justify-center gap-2">
+            <i class="fa-solid fa-bag-shopping text-aura-gold"></i>
+            <span>Adicionar à Sacola</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =======================================================================
+       MODAL 2: SACOLA DE COMPRAS -> WHATSAPP
+       ======================================================================= -->
+  <div id="modal-sacola" class="modal-backdrop fixed inset-0 z-50 bg-stone-950/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4" role="dialog" aria-modal="true">
+    <div class="modal-panel bg-white w-full max-w-lg max-h-[92vh] overflow-y-auto rounded-3xl shadow-2xl border border-stone-200 p-5 sm:p-7 space-y-5">
+      <div class="flex items-center justify-between pb-4 border-b border-stone-100">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-widest text-aura-goldDark">Resumo do Pedido</span>
+          <h3 class="font-display text-2xl font-semibold text-aura-stone">Sua Sacola (<span id="ms-qtd">0</span>)</h3>
+        </div>
+        <button type="button" onclick="fecharSacola()" aria-label="Fechar sacola" class="w-9 h-9 rounded-full bg-stone-100 text-stone-600 flex items-center justify-center hover:bg-stone-200 cursor-pointer">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div id="ms-lista" class="space-y-3 max-h-60 overflow-y-auto pr-1"></div>
+
+      <div id="ms-dados" class="space-y-3 pt-3 border-t border-stone-100">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-[11px] font-bold text-stone-600 mb-1">Seu Nome *</label>
+            <input id="ms-cliente-nome" type="text" placeholder="Como podemos te chamar?" class="w-full px-3.5 py-2.5 rounded-xl border border-stone-200 text-xs sm:text-sm focus:outline-none focus:border-aura-goldDark" />
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-stone-600 mb-1">Entrega Preferida</label>
+            <select id="ms-entrega" class="w-full px-3.5 py-2.5 rounded-xl border border-stone-200 text-xs sm:text-sm bg-white focus:outline-none focus:border-aura-goldDark">
+              <option value="Correios (Brasil)">Correios com Seguro</option>
+              <option value="Motoboy (São Paulo)">Motoboy Rápido (SP)</option>
+              <option value="Retirada Combinada">Retirada Combinada</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-[11px] font-bold text-stone-600 mb-1">Pagamento</label>
+            <select id="ms-pagamento" class="w-full px-3.5 py-2.5 rounded-xl border border-stone-200 text-xs sm:text-sm bg-white">
+              <option value="Pix">Pix</option>
+              <option value="Cartão de Crédito">Cartão de Crédito</option>
+              <option value="Combinar no WhatsApp">Combinar no WhatsApp</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-stone-600 mb-1">CEP ou Bairro</label>
+            <input id="ms-cep" type="text" placeholder="Ex: 01414-001 / Jardins" class="w-full px-3.5 py-2.5 rounded-xl border border-stone-200 text-xs sm:text-sm focus:outline-none focus:border-aura-goldDark" />
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-4 border-t border-stone-100 flex items-center justify-between">
+        <div>
+          <span class="text-xs text-stone-500 block">Total estimado</span>
+          <span id="ms-total" class="font-display text-2xl font-bold text-aura-stone">R$ 0,00</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <button type="button" id="ms-limpar" onclick="limparSacola()" aria-label="Limpar sacola" title="Limpar sacola" class="px-3.5 py-3 rounded-xl border border-stone-200 text-stone-500 hover:text-red-600 hover:bg-red-50 text-xs font-semibold transition cursor-pointer disabled:opacity-40">
+            <i class="fa-regular fa-trash-can"></i>
+          </button>
+          <button type="button" id="ms-enviar" onclick="enviarPedidoWhatsApp()" class="px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm transition cursor-pointer disabled:opacity-40 flex items-center gap-2">
+            <i class="fa-brands fa-whatsapp text-base"></i>
+            <span>Enviar Pedido</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =======================================================================
+       MODAL 3: CONSULTORIA DE MIX & PRESENTES
+       ======================================================================= -->
+  <div id="modal-consultoria" class="modal-backdrop fixed inset-0 z-50 bg-stone-950/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4" role="dialog" aria-modal="true">
+    <div class="modal-panel bg-white w-full max-w-md rounded-3xl shadow-2xl border border-stone-200 p-6 space-y-4">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-widest text-aura-goldDark">Curadoria Sob Medida</span>
+          <h3 class="font-display text-2xl font-semibold text-aura-stone">Montar Mix ou Presente</h3>
+        </div>
+        <button type="button" onclick="fecharModalConsultoria()" aria-label="Fechar" class="w-8 h-8 rounded-full bg-stone-100 text-stone-600 flex items-center justify-center cursor-pointer">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form id="form-consultoria" class="space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-stone-700 mb-1">O que você procura? *</label>
+          <select id="cs-tipo" class="w-full px-3.5 py-2.5 rounded-xl border border-stone-200 text-xs sm:text-sm bg-white">
+            <option value="Mix de colares em camadas">Montar mix de colares em camadas</option>
+            <option value="Presente especial com embalagem">Presente especial com embalagem</option>
+            <option value="Combinação de brincos e anéis">Combinação de brincos e anéis</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-stone-700 mb-1">Seu nome *</label>
+          <input id="cs-nome" type="text" required placeholder="Seu nome" class="w-full px-3.5 py-2.5 rounded-xl border border-stone-200 text-xs sm:text-sm" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-stone-700 mb-1">Preferência (Ouro 18k, Prata 925, estilo)</label>
+          <textarea id="cs-detalhes" rows="3" placeholder="Ex: Quero algo delicado em Ouro 18k até R$ 150..." class="w-full px-3.5 py-2.5 rounded-xl border border-stone-200 text-xs sm:text-sm"></textarea>
+        </div>
+        <button type="submit" class="w-full py-3 rounded-xl bg-aura-stone hover:bg-aura-goldDark text-white font-bold text-xs sm:text-sm transition cursor-pointer flex items-center justify-center gap-2">
+          <i class="fa-brands fa-whatsapp text-emerald-400 text-base"></i>
+          <span>Falar com a Curadoria</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Lenis + GSAP Animations -->
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <script>
+    const WHATSAPP_NUMBER = '5511999999999';
+
+    const BANHOS = [
+      { nome: 'Ouro 18k', cor: '#D4AF37' },
+      { nome: 'Prata 925', cor: '#CBD5E1' }
+    ];
+
+    const AROS = ['14', '16', '18', '20'];
+
+    const PRODUTOS = [
+      {
+        id: 'corrente-delicada',
+        nome: 'Corrente Delicada com Pingente',
+        cat: 'colares',
+        catLabel: 'Colares',
+        preco: 59.00,
+        banhoPadrao: 'Ouro 18k',
+        specs: '45 cm + extensor 5 cm • Níquel-Free',
+        img: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=700&q=80',
+        desc: 'Linha fina e leve com brilho discreto para uso diário ou composição em camadas.',
+        temAro: false
+      },
+      {
+        id: 'brinco-coracao-azul',
+        nome: 'Brinco Coração Cristal Azul',
+        cat: 'brincos',
+        catLabel: 'Brincos',
+        preco: 48.00,
+        banhoPadrao: 'Ouro 18k',
+        specs: '2,2 cm • Fecho gancho confortável',
+        img: 'https://images.unsplash.com/photo-1630019852942-f89202989a59?auto=format&fit=crop&w=700&q=80',
+        desc: 'Brinco delicado com cristal lapidado em formato de coração e brilho suave para iluminar o rosto.',
+        temAro: false
+      },
+      {
+        id: 'anel-solitario',
+        nome: 'Anel Solitário Cristal',
+        cat: 'aneis',
+        catLabel: 'Anéis',
+        preco: 52.00,
+        banhoPadrao: 'Prata 925',
+        specs: 'Aros 14 ao 20 • Zircônia central',
+        img: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=700&q=80',
+        desc: 'Aro delicado com pedra central lapidada e brilho intenso. Clássico atemporal para usar só ou combinado.',
+        temAro: true
+      },
+      {
+        id: 'colar-perolas',
+        nome: 'Colar Clássico de Pérolas',
+        cat: 'colares',
+        catLabel: 'Colares',
+        preco: 75.00,
+        banhoPadrao: 'Ouro 18k',
+        specs: '42 cm • Fecho joia reforçado',
+        img: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=700&q=80',
+        desc: 'Fio uniforme de pérolas selecionadas com acabamento luminoso, ideal para ocasiões especiais e presentes.',
+        temAro: false
+      },
+      {
+        id: 'brinco-pedra-perola',
+        nome: 'Brinco com Pedra e Pérola',
+        cat: 'brincos',
+        catLabel: 'Brincos',
+        preco: 44.00,
+        banhoPadrao: 'Prata 925',
+        specs: '1,8 cm • Tarraxa confortável',
+        img: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=700&q=80',
+        desc: 'Peça delicada com brilho suave e toque clássico para transitar do trabalho ao jantar.',
+        temAro: false
+      },
+      {
+        id: 'colar-ponto-luz',
+        nome: 'Colar Ponto de Luz Halo',
+        cat: 'colares',
+        catLabel: 'Colares',
+        preco: 49.00,
+        banhoPadrao: 'Prata 925',
+        specs: '45 cm • Cravação em microzircônias',
+        img: 'https://images.unsplash.com/photo-1598560917505-59a3ad559071?auto=format&fit=crop&w=700&q=80',
+        desc: 'Corrente veneziana fina com pingente central rodeado por microzircônias de alto brilho.',
+        temAro: false
+      }
+    ];
+
+    let filtroAtual = 'todos';
+    let buscaAtual = '';
+    let sacola = [];
+    let produtoModalAtual = null;
+    let banhoModalAtual = 'Ouro 18k';
+    let aroModalAtual = '16';
+    let qtdModalAtual = 1;
+
+    const formatarMoeda = (v) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+    function renderizarProdutos() {
+      const grid = document.getElementById('grid-produtos');
+      const vazio = document.getElementById('estado-vazio');
+      const q = buscaAtual.toLowerCase();
+
+      const lista = PRODUTOS.filter(p => {
+        const catOk = filtroAtual === 'todos' || p.cat === filtroAtual;
+        const textOk = !q || p.nome.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q) || p.catLabel.toLowerCase().includes(q);
+        return catOk && textOk;
+      });
+
+      grid.innerHTML = lista.map(p => `
+        <article onclick="abrirModalProduto('${p.id}')" class="product-card bg-white rounded-2xl border border-stone-200/80 overflow-hidden flex flex-col justify-between shadow-sm cursor-pointer transition-all duration-300 group">
+          <div>
+            <div class="relative aspect-square bg-stone-100 overflow-hidden">
+              <img src="${p.img}" alt="${p.nome}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+              <span class="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-md bg-white/95 backdrop-blur-sm text-aura-stone text-[10px] font-bold border border-stone-200/80">
+                ${p.banhoPadrao}
+              </span>
+            </div>
+            <div class="p-3.5 sm:p-4">
+              <span class="text-[10px] uppercase tracking-wider text-stone-400 font-bold block">${p.catLabel}</span>
+              <h3 class="font-display text-base sm:text-xl font-semibold text-aura-stone leading-snug mt-0.5">${p.nome}</h3>
+              <p class="text-[11px] text-stone-500 mt-1">${p.specs}</p>
+            </div>
+          </div>
+          <div class="px-3.5 sm:px-4 pb-4 pt-2.5 border-t border-stone-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+            <span class="font-display font-bold text-lg text-aura-stone">${formatarMoeda(p.preco)}</span>
+            <span class="w-full sm:w-auto text-center px-3 py-1.5 rounded-lg bg-aura-sand/70 group-hover:bg-aura-stone group-hover:text-white text-aura-stone text-[11px] font-bold transition">
+              Escolher
+            </span>
+          </div>
+        </article>
+      `).join('');
+
+      vazio.classList.toggle('hidden', lista.length > 0);
+    }
+
+    function abrirModalProduto(id) {
+      const p = PRODUTOS.find(x => x.id === id);
+      if (!p) return;
+      produtoModalAtual = p;
+      banhoModalAtual = p.banhoPadrao;
+      aroModalAtual = '16';
+      qtdModalAtual = 1;
+
+      document.getElementById('mp-img').src = p.img;
+      document.getElementById('mp-img').alt = p.nome;
+      document.getElementById('mp-badge').textContent = p.catLabel;
+      document.getElementById('mp-nome').textContent = p.nome;
+      document.getElementById('mp-specs').textContent = p.specs;
+      document.getElementById('mp-preco').textContent = formatarMoeda(p.preco);
+      document.getElementById('mp-desc').textContent = p.desc;
+      document.getElementById('mp-qtd').textContent = '1';
+      document.getElementById('mp-presente-obs').value = '';
+
+      document.getElementById('mp-aro-box').classList.toggle('hidden', !p.temAro);
+      renderizarBanhos();
+      if (p.temAro) renderizarAros();
+
+      document.getElementById('modal-produto').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function renderizarBanhos() {
+      document.getElementById('mp-banho-label').textContent = banhoModalAtual;
+      document.getElementById('mp-banhos').innerHTML = BANHOS.map(b => {
+        const ativo = b.nome === banhoModalAtual;
+        return `
+          <button type="button" onclick="selecionarBanho('${b.nome}')" class="inline-flex items-center gap-2 px-3.5 py-2 rounded-full text-xs font-semibold border transition cursor-pointer ${ativo ? 'border-aura-stone bg-aura-stone text-white' : 'border-stone-200 bg-white text-stone-700 hover:border-aura-goldDark'}">
+            <span class="w-3.5 h-3.5 rounded-full border border-black/15 shrink-0" style="background: ${b.cor}"></span>
+            <span>${b.nome}</span>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function renderizarAros() {
+      document.getElementById('mp-aro-label').textContent = aroModalAtual;
+      document.getElementById('mp-aros').innerHTML = AROS.map(a => {
+        const ativo = a === aroModalAtual;
+        return `
+          <button type="button" onclick="selecionarAro('${a}')" class="w-10 h-10 rounded-xl text-xs font-bold border transition cursor-pointer ${ativo ? 'border-aura-stone bg-aura-stone text-white' : 'border-stone-200 bg-white text-stone-700 hover:border-aura-goldDark'}">
+            ${a}
+          </button>
+        `;
+      }).join('');
+    }
+
+    function selecionarBanho(nome) {
+      banhoModalAtual = nome;
+      renderizarBanhos();
+    }
+
+    function selecionarAro(aro) {
+      aroModalAtual = aro;
+      renderizarAros();
+    }
+
+    function alterarQtdModal(delta) {
+      qtdModalAtual = Math.max(1, qtdModalAtual + delta);
+      document.getElementById('mp-qtd').textContent = String(qtdModalAtual);
+    }
+
+    function fecharModalProduto() {
+      document.getElementById('modal-produto').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function confirmarAdicionarSacola() {
+      if (!produtoModalAtual) return;
+      const obs = document.getElementById('mp-presente-obs').value.trim();
+      const aro = produtoModalAtual.temAro ? aroModalAtual : '';
+      const existente = sacola.find(i =>
+        i.id === produtoModalAtual.id && i.banho === banhoModalAtual && i.aro === aro && i.obs === obs
+      );
+
+      if (existente) {
+        existente.qtd += qtdModalAtual;
+      } else {
+        sacola.push({
+          id: produtoModalAtual.id,
+          nome: produtoModalAtual.nome,
+          preco: produtoModalAtual.preco,
+          banho: banhoModalAtual,
+          aro,
+          obs,
+          qtd: qtdModalAtual
+        });
+      }
+      fecharModalProduto();
+      atualizarSacolaUI();
+    }
+
+    function atualizarSacolaUI() {
+      const totalQtd = sacola.reduce((acc, i) => acc + i.qtd, 0);
+      const totalValor = sacola.reduce((acc, i) => acc + (i.preco * i.qtd), 0);
+
+      document.getElementById('badge-sacola').textContent = String(totalQtd);
+      document.getElementById('barra-qtd').textContent = String(totalQtd);
+      document.getElementById('barra-total').textContent = formatarMoeda(totalValor);
+
+      const barra = document.getElementById('barra-sacola');
+      if (totalQtd > 0) {
+        barra.classList.remove('translate-y-28', 'opacity-0', 'pointer-events-none');
+      } else {
+        barra.classList.add('translate-y-28', 'opacity-0', 'pointer-events-none');
+      }
+    }
+
+    function renderizarSacolaModal() {
+      const totalQtd = sacola.reduce((acc, i) => acc + i.qtd, 0);
+      const totalValor = sacola.reduce((acc, i) => acc + (i.preco * i.qtd), 0);
+      document.getElementById('ms-qtd').textContent = String(totalQtd);
+      document.getElementById('ms-total').textContent = formatarMoeda(totalValor);
+
+      const lista = document.getElementById('ms-lista');
+      const dados = document.getElementById('ms-dados');
+      const btnEnviar = document.getElementById('ms-enviar');
+      const btnLimpar = document.getElementById('ms-limpar');
+
+      if (sacola.length === 0) {
+        lista.innerHTML = `<p class="text-center py-8 text-xs sm:text-sm text-stone-400">Sua sacola está vazia. Clique em qualquer peça do catálogo para escolher o acabamento e adicionar.</p>`;
+        dados.classList.add('hidden');
+        btnEnviar.disabled = true;
+        btnLimpar.disabled = true;
+        return;
+      }
+
+      dados.classList.remove('hidden');
+      btnEnviar.disabled = false;
+      btnLimpar.disabled = false;
+
+      lista.innerHTML = sacola.map((item, idx) => `
+        <div class="p-3.5 rounded-2xl bg-stone-50 border border-stone-200/70 flex items-center justify-between gap-3">
+          <div class="min-w-0">
+            <h4 class="font-display font-bold text-sm sm:text-base text-aura-stone truncate">${item.nome}</h4>
+            <p class="text-[11px] text-stone-500">Banho: <strong>${item.banho}</strong>${item.aro ? ` • Aro ${item.aro}` : ''}${item.obs ? ` • Obs: "${item.obs}"` : ''}</p>
+            <p class="text-xs font-bold text-aura-goldDark mt-1">${formatarMoeda(item.preco * item.qtd)}</p>
+          </div>
+          <div class="flex items-center gap-1.5 shrink-0">
+            <button type="button" onclick="mudarQtdSacola(${idx}, -1)" class="w-7 h-7 rounded-lg bg-white border border-stone-200 text-xs font-bold cursor-pointer">-</button>
+            <span class="w-5 text-center text-xs font-bold">${item.qtd}</span>
+            <button type="button" onclick="mudarQtdSacola(${idx}, 1)" class="w-7 h-7 rounded-lg bg-white border border-stone-200 text-xs font-bold cursor-pointer">+</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function mudarQtdSacola(idx, delta) {
+      if (!sacola[idx]) return;
+      sacola[idx].qtd += delta;
+      if (sacola[idx].qtd <= 0) sacola.splice(idx, 1);
+      atualizarSacolaUI();
+      renderizarSacolaModal();
+    }
+
+    function limparSacola() {
+      sacola = [];
+      atualizarSacolaUI();
+      renderizarSacolaModal();
+    }
+
+    function abrirSacola() {
+      renderizarSacolaModal();
+      document.getElementById('modal-sacola').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function fecharSacola() {
+      document.getElementById('modal-sacola').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function enviarPedidoWhatsApp() {
+      if (sacola.length === 0) return;
+      const nome = document.getElementById('ms-cliente-nome').value.trim() || 'Cliente';
+      const entrega = document.getElementById('ms-entrega').value;
+      const pagamento = document.getElementById('ms-pagamento').value;
+      const cep = document.getElementById('ms-cep').value.trim();
+      const total = sacola.reduce((acc, i) => acc + (i.preco * i.qtd), 0);
+
+      const linhasItens = sacola.map(i =>
+        `• *${i.qtd}x* ${i.nome} — _${i.banho}_${i.aro ? ` (Aro ${i.aro})` : ''}${i.obs ? ` [Presente: ${i.obs}]` : ''} (${formatarMoeda(i.preco * i.qtd)})`
+      ).join('\n');
+
+      const msg = [
+        `✨ *NOVO PEDIDO — AURA SEMIJOIAS* ✨`,
+        ``,
+        `🛍️ *PEÇAS SELECIONADAS:*`,
+        linhasItens,
+        ``,
+        `💰 *TOTAL ESTIMADO: ${formatarMoeda(total)}*`,
+        ``,
+        `📋 *DADOS PARA ENTREGA:*`,
+        `• Cliente: ${nome}`,
+        `• Entrega: ${entrega}${cep ? ` (${cep})` : ''}`,
+        `• Pagamento: ${pagamento}`,
+        ``,
+        `Olá! Gostaria de confirmar a disponibilidade e o envio dessas peças. 😊`
+      ].join('\n');
+
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener');
+    }
+
+    function abrirModalConsultoria() {
+      document.getElementById('modal-consultoria').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function fecharModalConsultoria() {
+      document.getElementById('modal-consultoria').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function initAnimations() {
+      if (typeof Lenis !== 'undefined') {
+        const lenis = new Lenis({
+          duration: 1.05,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          smoothWheel: true
+        });
+        function raf(time) {
+          lenis.raf(time);
+          requestAnimationFrame(raf);
         }
+        requestAnimationFrame(raf);
+        if (typeof ScrollTrigger !== 'undefined') {
+          lenis.on('scroll', ScrollTrigger.update);
+        }
+      }
 
-        document.querySelectorAll('.card-produto img').forEach(imagem => {
-            imagem.tabIndex = 0;
-            imagem.setAttribute('role', 'button');
-            imagem.setAttribute('aria-label', `Ampliar imagem: ${imagem.alt}`);
-            imagem.classList.add('cursor-zoom-in', 'focus:outline-none', 'focus-visible:ring-2', 'focus-visible:ring-champagne-600');
-            imagem.addEventListener('click', () => abrirImagemProduto(imagem));
-            imagem.addEventListener('keydown', evento => {
-                if (evento.key === 'Enter' || evento.key === ' ') {
-                    evento.preventDefault();
-                    abrirImagemProduto(imagem);
-                }
-            });
+      if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+
+        gsap.from('.hero-anim', {
+          y: 26,
+          opacity: 0,
+          duration: 0.8,
+          stagger: 0.1,
+          ease: 'power3.out',
+          clearProps: 'transform,opacity'
         });
 
-        document.getElementById('fecharModalImagem').addEventListener('click', () => {
-            modalImagem.close();
+        document.querySelectorAll('.reveal-up').forEach(el => {
+          gsap.from(el, {
+            y: 30,
+            opacity: 0,
+            duration: 0.75,
+            ease: 'power2.out',
+            clearProps: 'transform,opacity',
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 95%',
+              once: true
+            }
+          });
         });
 
-        modalImagem.addEventListener('click', evento => {
-            if (evento.target === modalImagem) {
-                modalImagem.close();
-            }
+        gsap.from('#grid-produtos .product-card', {
+          y: 28,
+          opacity: 0,
+          duration: 0.65,
+          stagger: 0.08,
+          ease: 'power2.out',
+          clearProps: 'transform,opacity',
+          scrollTrigger: {
+            trigger: '#grid-produtos',
+            start: 'top 92%',
+            once: true
+          }
         });
+      }
+    }
 
-        // 1. FILTRAGEM DE CATEGORIAS
-        function filtrarProdutos(categoria) {
-            const botoes = ['todos', 'colares', 'brincos', 'aneis'];
-            botoes.forEach(b => {
-                const btn = document.getElementById(`filtro-${b}`);
-                if (b === categoria) {
-                    btn.className = "px-4 py-1.5 rounded-full text-xs font-bold bg-stone-900 text-white transition shrink-0";
-                } else {
-                    btn.className = "px-4 py-1.5 rounded-full text-xs font-medium bg-white text-stone-600 border border-stone-200 hover:border-champagne-500 transition shrink-0";
-                }
-            });
+    document.addEventListener('DOMContentLoaded', () => {
+      renderizarProdutos();
+      initAnimations();
 
-            const cards = document.querySelectorAll('.card-produto');
-            cards.forEach(card => {
-                if (categoria === 'todos' || card.getAttribute('data-categoria') === categoria) {
-                    card.classList.remove('hidden');
-                } else {
-                    card.classList.add('hidden');
-                }
-            });
-        }
+      document.getElementById('btn-abrir-sacola').addEventListener('click', abrirSacola);
 
-        // 2. SACOLA DE COMPRAS INTELIGENTE COM PERSISTÊNCIA LOCALSTORAGE
-        const STORAGE_SACOLA = 'aura_semijoias_sacola';
-        const STORAGE_CLIENTE = 'aura_semijoias_cliente';
-
-        // Carrega do localStorage inicial
-        let sacola = carregarSacolaLocal();
-
-        const modalSacola = document.getElementById('modalSacola');
-        const itensModalSacola = document.getElementById('itensModalSacola');
-        const totalModalSacola = document.getElementById('totalModalSacola');
-        const secaoDadosCliente = document.getElementById('secaoDadosCliente');
-        const contadorItensModal = document.getElementById('contadorItensModal');
-
-        function carregarSacolaLocal() {
-            try {
-                const dados = localStorage.getItem(STORAGE_SACOLA);
-                return dados ? JSON.parse(dados) : [];
-            } catch (e) {
-                console.warn('Erro ao ler localStorage', e);
-                return [];
-            }
-        }
-
-        function salvarSacolaLocal() {
-            try {
-                localStorage.setItem(STORAGE_SACOLA, JSON.stringify(sacola));
-            } catch (e) {
-                console.warn('Erro ao salvar no localStorage', e);
-            }
-            atualizarVisualSacola();
-        }
-
-        function abrirModalSacola() {
-            carregarDadosCliente();
-            atualizarVisualSacola();
-            modalSacola.showModal();
-        }
-
-        document.getElementById('abrirSacola').addEventListener('click', abrirModalSacola);
-
-        document.getElementById('fecharModalSacola').addEventListener('click', () => {
-            salvarDadosCliente();
-            modalSacola.close();
+      document.querySelectorAll('.cat-pill').forEach(btn => {
+        btn.addEventListener('click', () => {
+          filtroAtual = btn.dataset.cat;
+          document.querySelectorAll('.cat-pill').forEach(b => {
+            const ativo = b === btn;
+            b.className = ativo
+              ? 'cat-pill px-4 py-2 rounded-full text-xs font-bold bg-aura-stone text-white shrink-0 transition cursor-pointer'
+              : 'cat-pill px-4 py-2 rounded-full text-xs font-semibold bg-white text-stone-600 border border-stone-200 hover:border-aura-goldDark shrink-0 transition cursor-pointer';
+          });
+          renderizarProdutos();
         });
+      });
 
-        modalSacola.addEventListener('click', evento => {
-            if (evento.target === modalSacola) {
-                salvarDadosCliente();
-                modalSacola.close();
-            }
+      document.getElementById('input-busca').addEventListener('input', (e) => {
+        buscaAtual = e.target.value.trim();
+        renderizarProdutos();
+      });
+
+      document.querySelectorAll('.faq-btn').forEach(btn => {
+        btn.setAttribute('aria-expanded', 'false');
+        btn.addEventListener('click', () => {
+          const body = btn.nextElementSibling;
+          const icon = btn.querySelector('i');
+          const aberto = !body.classList.contains('hidden');
+          body.classList.toggle('hidden', aberto);
+          btn.setAttribute('aria-expanded', String(!aberto));
+          if (icon) icon.style.transform = aberto ? 'rotate(0deg)' : 'rotate(180deg)';
         });
+      });
 
-        // Adiciona produto com feedback visual dinâmico
-        function adicionarASacola(nome, preco) {
-            const produtoCard = [...document.querySelectorAll('.card-produto')].find(card =>
-                card.querySelector('h3')?.textContent.trim() === nome
-            );
-            const imagem = produtoCard?.querySelector('img')?.src;
+      document.getElementById('form-consultoria').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const tipo = document.getElementById('cs-tipo').value;
+        const nome = document.getElementById('cs-nome').value.trim();
+        const detalhes = document.getElementById('cs-detalhes').value.trim();
+        const msg = `✨ *CURADORIA AURA SEMIJOIAS*\n\n• Nome: ${nome}\n• Interesse: ${tipo}\n${detalhes ? `• Preferências: ${detalhes}` : ''}`;
+        window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener');
+        fecharModalConsultoria();
+      });
 
-            if (!imagem) {
-                console.error(`Não foi possível localizar a imagem do produto "${nome}".`);
-                return;
-            }
-
-            // Verifica se o item já está na sacola
-            const itemExistente = sacola.find(item => item.nome === nome);
-            if (itemExistente) {
-                itemExistente.qtd += 1;
-            } else {
-                sacola.push({ nome, preco, imagem, qtd: 1 });
-            }
-
-            salvarSacolaLocal();
-
-            // Microinteração no botão clicado
-            const btnClicado = window.event?.target?.closest('button');
-            if (btnClicado) {
-                const originalHtml = btnClicado.innerHTML;
-                const originalClass = btnClicado.className;
-                
-                btnClicado.innerHTML = '<i class="fa-solid fa-check text-[10px]"></i> <span>Adicionado!</span>';
-                btnClicado.className = "w-full sm:w-auto px-3 py-1.5 bg-emerald-600 text-white font-bold rounded-lg text-xs transition border border-emerald-600 flex items-center justify-center gap-1.5 shadow-sm";
-                btnClicado.disabled = true;
-
-                // Efeito bounce no badge
-                const badge = document.getElementById('badgeSacolaQtd');
-                badge?.classList.add('scale-125');
-
-                setTimeout(() => {
-                    btnClicado.innerHTML = originalHtml;
-                    btnClicado.className = originalClass;
-                    btnClicado.disabled = false;
-                    badge?.classList.remove('scale-125');
-                }, 1000);
-            }
-        }
-
-        // Alterar quantidade unitária (+1 ou -1)
-        function alterarQtd(nome, delta) {
-            const item = sacola.find(i => i.nome === nome);
-            if (!item) return;
-
-            item.qtd += delta;
-            if (item.qtd <= 0) {
-                sacola = sacola.filter(i => i.nome !== nome);
-            }
-
-            salvarSacolaLocal();
-        }
-
-        // Remover item específico
-        function removerItem(nome) {
-            sacola = sacola.filter(i => i.nome !== nome);
-            salvarSacolaLocal();
-        }
-
-        // Limpar toda a sacola
-        function esvaziarSacola() {
-            if (sacola.length === 0) return;
-            if (confirm('Deseja realmente esvaziar sua sacola?')) {
-                sacola = [];
-                salvarSacolaLocal();
-            }
-        }
-
-        // Atualização completa da interface
-        function atualizarVisualSacola() {
-            const barra = document.getElementById('barraSacola');
-            const badgeQtd = document.getElementById('badgeSacolaQtd');
-            const txtQtd = document.getElementById('txtQtdSacola');
-            const txtTotal = document.getElementById('txtTotalSacola');
-
-            const totalQtd = sacola.reduce((acc, item) => acc + item.qtd, 0);
-            const totalValor = sacola.reduce((acc, item) => acc + (item.preco * item.qtd), 0);
-            const totalFormatado = `R$ ${totalValor.toFixed(2).replace('.', ',')}`;
-
-            badgeQtd.innerText = totalQtd;
-            document.getElementById('abrirSacola').setAttribute('aria-label', `Abrir sacola com ${totalQtd} ${totalQtd === 1 ? 'item' : 'itens'}`);
-            txtQtd.innerText = totalQtd;
-            txtTotal.innerText = totalFormatado;
-            totalModalSacola.innerText = totalFormatado;
-
-            if (contadorItensModal) {
-                contadorItensModal.innerText = totalQtd > 0 ? `(${totalQtd} ${totalQtd === 1 ? 'peça' : 'peças'})` : '';
-            }
-
-            // Exibir ou ocultar barra flutuante
-            if (totalQtd > 0) {
-                barra.classList.remove('translate-y-32', 'opacity-0');
-            } else {
-                barra.classList.add('translate-y-32', 'opacity-0');
-            }
-
-            // Atualiza itens do modal
-            itensModalSacola.replaceChildren();
-
-            if (sacola.length === 0) {
-                secaoDadosCliente.classList.add('hidden');
-                const mensagem = document.createElement('div');
-                mensagem.className = 'rounded-2xl border border-dashed border-champagne-500/50 bg-white/70 px-4 py-10 text-center text-sm text-stone-500 flex flex-col items-center gap-2';
-                mensagem.innerHTML = `
-                    <i class="fa-solid fa-bag-shopping text-3xl text-stone-300 mb-1"></i>
-                    <p class="font-serif font-bold text-stone-800">Sua sacola está vazia</p>
-                    <p class="text-xs text-stone-400 max-w-xs">Escolha suas peças favoritas em nosso catálogo para montar seu pedido.</p>
-                `;
-                itensModalSacola.append(mensagem);
-            } else {
-                secaoDadosCliente.classList.remove('hidden');
-
-                sacola.forEach(item => {
-                    const linha = document.createElement('div');
-                    linha.className = 'flex items-center gap-3 rounded-xl border border-stone-200/80 bg-white p-3 shadow-sm transition hover:border-champagne-500/50';
-
-                    const subtotalItem = (item.preco * item.qtd).toFixed(2).replace('.', ',');
-                    const precoUnitario = item.preco.toFixed(2).replace('.', ',');
-
-                    linha.innerHTML = `
-                        <img src="${item.imagem}" alt="${item.nome}" class="h-16 w-16 sm:h-18 sm:w-18 shrink-0 rounded-lg bg-stone-100 object-cover border border-stone-100">
-                        <div class="min-w-0 flex-1">
-                            <div class="flex items-start justify-between gap-2">
-                                <h5 class="font-serif text-xs sm:text-sm font-bold text-stone-900 leading-snug line-clamp-1">${item.nome}</h5>
-                                <button onclick="removerItem('${item.nome}')" title="Remover item" aria-label="Remover ${item.nome}" class="text-stone-400 hover:text-red-600 transition p-1 text-xs">
-                                    <i class="fa-regular fa-trash-can"></i>
-                                </button>
-                            </div>
-                            <p class="text-[11px] text-stone-400 mb-2">R$ ${precoUnitario} un</p>
-                            
-                            <div class="flex items-center justify-between">
-                                <div class="inline-flex items-center border border-stone-200 rounded-lg bg-stone-50 overflow-hidden shadow-xs">
-                                    <button onclick="alterarQtd('${item.nome}', -1)" aria-label="Diminuir" class="w-7 h-7 flex items-center justify-center text-stone-600 hover:bg-champagne-200 hover:text-stone-900 transition text-xs font-bold active:scale-90">
-                                        <i class="fa-solid fa-minus text-[9px]"></i>
-                                    </button>
-                                    <span class="w-8 text-center text-xs font-bold text-stone-800">${item.qtd}</span>
-                                    <button onclick="alterarQtd('${item.nome}', 1)" aria-label="Aumentar" class="w-7 h-7 flex items-center justify-center text-stone-600 hover:bg-champagne-200 hover:text-stone-900 transition text-xs font-bold active:scale-90">
-                                        <i class="fa-solid fa-plus text-[9px]"></i>
-                                    </button>
-                                </div>
-                                <span class="font-serif font-black text-xs sm:text-sm text-stone-900">
-                                    R$ ${subtotalItem}
-                                </span>
-                            </div>
-                        </div>
-                    `;
-                    itensModalSacola.append(linha);
-                });
-            }
-
-            document.getElementById('limparModalSacola').disabled = sacola.length === 0;
-            document.getElementById('enviarModalSacola').disabled = sacola.length === 0;
-        }
-
-        // 3. PERSISTÊNCIA DOS DADOS DO CLIENTE
-        function salvarDadosCliente() {
-            const dados = {
-                nome: document.getElementById('clienteNome')?.value.trim() || '',
-                local: document.getElementById('clienteLocal')?.value.trim() || '',
-                pagamento: document.querySelector('input[name="formaPagamento"]:checked')?.value || 'Pix',
-                obs: document.getElementById('clienteObs')?.value.trim() || ''
-            };
-            try {
-                localStorage.setItem(STORAGE_CLIENTE, JSON.stringify(dados));
-            } catch (e) {}
-            return dados;
-        }
-
-        function carregarDadosCliente() {
-            try {
-                const salvo = localStorage.getItem(STORAGE_CLIENTE);
-                if (!salvo) return;
-                const dados = JSON.parse(salvo);
-                if (dados.nome && document.getElementById('clienteNome')) document.getElementById('clienteNome').value = dados.nome;
-                if (dados.local && document.getElementById('clienteLocal')) document.getElementById('clienteLocal').value = dados.local;
-                if (dados.obs && document.getElementById('clienteObs')) document.getElementById('clienteObs').value = dados.obs;
-                if (dados.pagamento) {
-                    const radio = document.querySelector(`input[name="formaPagamento"][value="${dados.pagamento}"]`);
-                    if (radio) radio.checked = true;
-                }
-            } catch (e) {}
-        }
-
-        // Auto-salvar dados digitados
-        ['clienteNome', 'clienteLocal', 'clienteObs'].forEach(id => {
-            document.getElementById(id)?.addEventListener('input', salvarDadosCliente);
+      ['modal-produto', 'modal-sacola', 'modal-consultoria'].forEach(id => {
+        document.getElementById(id).addEventListener('click', (e) => {
+          if (e.target.id === id) {
+            e.target.classList.remove('open');
+            document.body.style.overflow = '';
+          }
         });
-        document.querySelectorAll('input[name="formaPagamento"]').forEach(radio => {
-            radio.addEventListener('change', salvarDadosCliente);
-        });
-
-        // 4. ENVIO PARA O WHATSAPP COM FORMATO COMERCIAL DE ALTA CONVERSÃO
-        function enviarSacolaWhatsApp() {
-            if (sacola.length === 0) return;
-
-            const cliente = salvarDadosCliente();
-
-            let itensTexto = '';
-            sacola.forEach(item => {
-                const subtotal = (item.preco * item.qtd).toFixed(2).replace('.', ',');
-                itensTexto += `• *${item.qtd}x* ${item.nome} _(R$ ${subtotal})_%0A`;
-            });
-
-            const total = sacola.reduce((acc, item) => acc + (item.preco * item.qtd), 0);
-            const totalFormatado = `R$ ${total.toFixed(2).replace('.', ',')}`;
-
-            let msg = `✨ *NOVO PEDIDO - AURA SEMIJOIAS* ✨%0A%0A`;
-            msg += `🛍️ *ITENS SELECIONADOS:*%0A${itensTexto}%0A`;
-            msg += `💰 *VALOR TOTAL: ${totalFormatado}*%0A%0A`;
-
-            msg += `📋 *DADOS PARA ENTREGA:*%0A`;
-            msg += `• *Cliente:* ${cliente.nome ? cliente.nome : 'Não informado'}%0A`;
-            msg += `• *Localização/CEP:* ${cliente.local ? cliente.local : 'A informar'}%0A`;
-            msg += `• *Pagamento preferido:* ${cliente.pagamento}%0A`;
-            if (cliente.obs) {
-                msg += `• *Observação:* ${cliente.obs}%0A`;
-            }
-
-            msg += `%0AOlá! Gostaria de confirmar a disponibilidade dessas peças e calcular o frete para envio. Como podemos prosseguir? 😊`;
-
-            window.open(`https://wa.me/5511999999999?text=${msg}`, '_blank');
-        }
-
-        // Inicialização
-        document.addEventListener('DOMContentLoaded', () => {
-            carregarDadosCliente();
-            atualizarVisualSacola();
-        });
-        // Executa caso o DOM já tenha carregado
-        carregarDadosCliente();
-        atualizarVisualSacola();
-    </script>
+      });
+    });
+  </script>
 </body>
 </html>
